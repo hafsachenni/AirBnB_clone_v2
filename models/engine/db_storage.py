@@ -28,14 +28,13 @@ class DBStorage:
         if getenv("HBNB_ENV") == 'test':
             Base.metadata.drop_all(self.__engine)
 
-        """creation of tables if they don't exist"""
         Base.metadata.create_all(self.__engine)
 
         Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
 
     def all(self, cls=None):
-        """queries on the current database session (self.__session)"""
+        """queries on the current database session"""
         if cls is None:
             classes = [State, City, User, Place, Review, Amenity]
             objects = []
@@ -52,21 +51,20 @@ class DBStorage:
         return dictionary
 
     def new(self, obj):
-        """add the object to the current database
-        session (self.__session)"""
+        """adds the object to the current database"""
         self.__session.add(obj)
 
     def save(self):
-        """commit all changes of the current database session"""
+        """commits all changes of the current database"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """ delete from the current database session object"""
+        """ deletes the current database session object"""
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
-        """create all tables in the database (feature of SQLAlchemy)"""
+        """create all tables in the database"""
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
             bind=self.__engine,
@@ -75,5 +73,5 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """closes the session"""
+        """ closes the session """
         self.__session.close()
