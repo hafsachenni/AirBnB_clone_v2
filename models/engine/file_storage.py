@@ -1,29 +1,29 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
+"""module that defines a class to manage file storage for airbnb project"""
 import json
 
 
 class FileStorage:
-    """This class manages storage of hbnb models in JSON format"""
+    """class that manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
+        """returns the list of objects"""
         if cls is not None:
             dictionary = {}
-            for key, value in self.__objects.items():
-                if isinstance(value, cls):
-                    dictionary[key] = value
+            for key, val in self.__objects.items():
+                if isinstance(val, cls):
+                    dictionary[key] = val
             return dictionary
         return self.__objects
 
     def new(self, obj):
-        """Adds new object to storage dictionary"""
+        """Adds new object to storage dict"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
-        """Saves storage dictionary to file"""
+        """it saves storage dictionary to a  file"""
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
             temp.update(FileStorage.__objects)
@@ -32,7 +32,7 @@ class FileStorage:
             json.dump(temp, f)
 
     def reload(self):
-        """Loads storage dictionary from file"""
+        """loads storage dictionary from a file"""
         from models.base_model import BaseModel
         from models.user import User
         from models.place import Place
@@ -56,10 +56,14 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """deletes an object from __objects if its inside"""
+        """delete obj from __objs"""
         if obj is None:
             return
-        gate = obj.__class__.__name__ + '.' + obj.id
-        if gate in self.__objects:
-            del self.__objects[gate]
+        key = obj.__class__.__name__ + '.' + obj.id
+        if key in self.__objects:
+            del self.__objects[key]
         self.save()
+
+    def close(self):
+        """calls reload() method to deserialize the JSON file to objs"""
+        self.reload()
