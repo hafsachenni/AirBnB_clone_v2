@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Console Module """
+"""the console module"""
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -13,7 +13,7 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
-    """ Contains the functionality for the HBNB console"""
+    """functioanlity for the airbnb project"""
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
@@ -119,17 +119,17 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         """ splits args into class name  and para"""
-        class_paras = args.split(" ")
+        class_para = args.split(" ")
 
-        if class_paras[0] not in HBNBCommand.classes:
+        if class_para[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        """ new dictionary to store attr values """
+        """ new dict to store attri values """
         new_dict = {}
-        """ split params into key and value pairs"""
-        for para in class_paras[1:]:
+        """ split param into key, value"""
+        for para in class_para[1:]:
             key, value = para.split('=')
-            """checking if value is enclosed in double quotes"""
+            """checks if value is enclosed in double quotes"""
             if value[0] == '"' and value[-1] == '"':
                 value = value[1:-1].replace("_", " ")
             else:
@@ -140,14 +140,19 @@ class HBNBCommand(cmd.Cmd):
             if key == 'name':
                 value = value.replace('_', ' ')
 
-            """ updating the dictionary"""    
+            """ updating dict"""    
             new_dict[key] = value
 
-        """ creation of an instance with provided attributes"""
-        new_instance = HBNBCommand.classes[class_paras[0]](**new_dict)
+        """ creates instance with provided attributes"""
+        new_instance = HBNBCommand.classes[class_para[0]](**new_dict)
         storage.new(new_instance)
         print(new_instance.id)
         storage.save()
+
+    def help_create(self):
+        """ Help information for the create method """
+        print("Creates a class of any type")
+        print("[Usage]: create <className>\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -224,11 +229,10 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
+                print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
