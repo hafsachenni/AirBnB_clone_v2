@@ -40,15 +40,15 @@ class BaseModel:
         models.storage.save()
 
     def to_dict(self):
-        """convert instance into dictionary format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.pop("_sa_instance_state", None)
-        dictionary.update({'__class__':
+        """converts instance into dictionary format"""
+        diction = {}
+        diction.update(self.__dict__)
+        diction.pop("_sa_instance_state", None)
+        diction.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        return dictionary
+        diction['created_at'] = self.created_at.isoformat()
+        diction['updated_at'] = self.updated_at.isoformat()
+        return diction
 
     def delete(self):
         """deletes the current obj from storage"""
