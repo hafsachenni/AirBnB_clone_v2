@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from os import getenv
 
+
 class Review(BaseModel, Base):
     """reviews to leave by clients"""
     __tablename__ = "reviews"
