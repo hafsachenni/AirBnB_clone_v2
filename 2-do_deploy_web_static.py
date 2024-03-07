@@ -3,9 +3,24 @@
 archive to both of my web servers"""
 from fabric.api import put, run, env
 from os.path import exists
+from datetime import datetime
+
 
 env.hosts = ['54.167.198.176', '35.175.102.14']
 
+
+def do_pack():
+    """generates a tgz archive"""
+    try:
+        date = datetime.now().strftime("%Y%m%d%H%M%S")
+        if isdir("versions") is False:
+            local("mkdir versions")
+        file_name = "versions/web_static_{}.tgz".format(date)
+        local("tar -cvzf {} web_static".format(file_name))
+        return file_name
+    except Exception as err:
+        return None
+    
 
 def do_deploy(archive_path):
     """deploying the compressed archive to my servers"""
@@ -33,5 +48,5 @@ def do_deploy(archive_path):
 
         print("New version deployed!")
         return True
-    except Exception as err:
+    except Exception:
         return False
