@@ -20,7 +20,7 @@ def do_pack():
         return file_name
     except Exception as err:
         return None
-    
+
 
 def do_deploy(archive_path):
     """deploying the compressed archive to my servers"""
