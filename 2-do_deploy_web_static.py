@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """this a fabric that distributes a compressed
 archive to both of my web servers"""
-from fabric.api import put, run, env
-from os.path import exists
+from fabric.api import put, run, env, local
+from os.path import exists, isdir
 from datetime import datetime
 
 
